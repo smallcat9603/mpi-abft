@@ -11,11 +11,11 @@ all : ${PROG}
 
 mm : ${DIR_BIN}/mm
 ${DIR_BIN}/mm : ${DIR_MM}/mm.c ${DIR_SRC}/abft.c 
-	${CC} -o $@ $+ ${CFLAGS}
+	${CC} -o $@ $^ ${CFLAGS}
 
 mm_abft : ${DIR_BIN}/mm_abft
 ${DIR_BIN}/mm_abft : ${DIR_MM}/mm_abft.c ${DIR_SRC}/abft.c 
-	${CC} -o $@ $+ ${CFLAGS}
+	${CC} -o $@ $^ ${CFLAGS}
 
 clean :
 	${RM} -f ${DIR_BIN}/*
