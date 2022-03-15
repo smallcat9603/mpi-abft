@@ -9,7 +9,7 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
-#include "../../include/abft.h"
+#include "../../include/abft.h" // relative to this file
 
 typedef struct {
         unsigned int rows;
@@ -204,7 +204,7 @@ int main(int argc, char *argv[]) {
     /** The master presents the results on the console */
     if (rank == 0){
 
-        FILE* fp = fopen("data/mat_result.txt", "w");
+        FILE* fp = fopen("data/mat_result.txt", "w"); // relative to runtime environment (current directory)
 
         int size = matrix_properties[0] * matrix_properties[3];
         int i = 0;
