@@ -1,7 +1,7 @@
 #ifndef  _ABFT_H_ 
 #define _ABFT_H_
 
-void MPI_Bcast_abft(double *buffer, int count, int rank, int procs, int* resend);
+void MPI_Bcast_abft(double *buffer, int count, int rank, int procs); //, int* resend);
 uint32_t do_crc32(unsigned char *data_bits, int bytes);
 int block_size(int data_bytes); //calculate block size (bytes)
 void cast_bits_to_char(unsigned char* bits, char* data, int bytes); //1 bit --> char '0' or '1' (8 bits)

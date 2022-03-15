@@ -167,13 +167,11 @@ int main(int argc, char *argv[]) {
         m_b = malloc( size_b * sizeof(double) );
     }
  
-    int resent = 0;
+    //int resent = 0;
     
     // send 1D matrices to workers
-    // MPI_Bcast(m_a, size_a , MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    // MPI_Bcast(m_b, size_b , MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Bcast_abft(m_a, size_a, rank, num_worker, &resent);
-    MPI_Bcast_abft(m_b, size_b, rank, num_worker, &resent); 
+    MPI_Bcast_abft(m_a, size_a, rank, num_worker); //, &resent);
+    MPI_Bcast_abft(m_b, size_b, rank, num_worker); //, &resent); 
     
     // calculate the start- and endrow for worker  
     int startrow = rank * ( matrix_properties[0] / num_worker);
@@ -205,7 +203,8 @@ int main(int argc, char *argv[]) {
 
     /** The master presents the results on the console */
     if (rank == 0){
-        FILE* fp = fopen("mat_result.txt", "w");
+
+        FILE* fp = fopen("../../data/mat_result.txt", "w");
 
         int size = matrix_properties[0] * matrix_properties[3];
         int i = 0;
@@ -219,12 +218,8 @@ int main(int argc, char *argv[]) {
                 fprintf(fp, "\n");
         }
 
-        fclose(fp); 
-
-		// printf("--------------------------------------------------\n");
-		// printf("FINAL RESULTS:\n");	  
-    //     printf("resent = %d (percentage = %f)\n", resent, resent/(2.0*(num_worker-1)));    
-        // printf("hamming_correct = %d (percentage = %f)\n", hamming_correct, 1.0*hamming_correct/(resent+hamming_correct));         
+        fclose(fp);     
+        
     }
     
     free(result_matrix);

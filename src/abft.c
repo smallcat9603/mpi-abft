@@ -18,7 +18,7 @@
 
 //abft: crc --> hamming
 //root = 0
-void MPI_Bcast_abft(double *buffer, int count, int rank, int procs, int* resend)
+void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* resend)
 {
   uint32_t crc = 0;
   uint32_t crc_check = 0;
@@ -133,7 +133,7 @@ void MPI_Bcast_abft(double *buffer, int count, int rank, int procs, int* resend)
           if(i != 0 && crc_ok_recv[i] == 'n')
           {
               MPI_Send(data_bits, data_bytes, MPI_UNSIGNED_CHAR, i, i, MPI_COMM_WORLD);
-              (*resend)++;
+              //(*resend)++;
           }
       }
   }

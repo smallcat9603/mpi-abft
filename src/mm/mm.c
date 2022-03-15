@@ -202,7 +202,7 @@ int main(int argc, char *argv[]) {
     /** The master presents the results on the console */
     if (rank == 0){
 
-        FILE* fp = fopen("mat_result.txt", "w");
+        FILE* fp = fopen("../../data/mat_result.txt", "w");
 
         int size = matrix_properties[0] * matrix_properties[3];
         int i = 0;
