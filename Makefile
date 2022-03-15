@@ -10,8 +10,8 @@ DIR_MM = ${DIR_SRC}/mm
 all : ${PROG}
 
 mm : ${DIR_BIN}/mm
-${DIR_BIN}/mm : ${DIR_MM}/mm.c ${DIR_SRC}/abft.c 
-	${CC} -o $@ $^ ${CFLAGS}
+${DIR_BIN}/mm : ${DIR_MM}/mm.c 
+	${CC} -o $@ $< ${CFLAGS}
 
 mm_abft : ${DIR_BIN}/mm_abft
 ${DIR_BIN}/mm_abft : ${DIR_MM}/mm_abft.c ${DIR_SRC}/abft.c 
