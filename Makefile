@@ -20,11 +20,11 @@ ${DIR_BIN}/mm_abft : ${DIR_MM}/mm_abft.c ${LIB_ABFT}
 	${CC} -o $@ $^ ${CFLAGS}
 
 lu : ${DIR_BIN}/lu
-${DIR_BIN}/lu : ${DIR_MM}/lu.c 
+${DIR_BIN}/lu : ${DIR_LU}/lu.c 
 	${CC} -o $@ $< ${CFLAGS}
 
 lu_abft : ${DIR_BIN}/lu_abft
-${DIR_BIN}/lu_abft : ${DIR_MM}/lu_abft.c ${LIB_ABFT}
+${DIR_BIN}/lu_abft : ${DIR_LU}/lu_abft.c ${LIB_ABFT}
 	${CC} -o $@ $^ ${CFLAGS}
 
 clean :
