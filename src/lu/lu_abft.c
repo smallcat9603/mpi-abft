@@ -45,11 +45,6 @@ int main(int argc, char *argv[])
    int i, j, tmp_size = mx_size - 1, diag_ref = 0;
    double start = MPI_Wtime();
  
-   uint32_t crc = 0;
-   uint32_t crc_check = 0;
-   unsigned char crc_ok = 'y';
-   unsigned char* crc_ok_recv = NULL;   
-   int resent = 0;
    srand((unsigned)time(NULL));     
    for (i = 0; i < tmp_size; i++, diag_ref++) {
       double *diag_row = &A[diag_ref * mx_size + diag_ref];
