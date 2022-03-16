@@ -17,8 +17,7 @@
 #include "../include/abft.h"
 
 //abft: crc --> hamming
-//root = 0
-void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* resend)
+void MPI_Bcast_abft(double *buffer, int count, int root, int rank, int procs)//, int* resend)
 {
   uint32_t crc = 0;
   uint32_t crc_check = 0;
@@ -28,7 +27,7 @@ void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* rese
   int data_bytes = count*sizeof(double);
   unsigned char* data_bits = (unsigned char*) malloc(sizeof(unsigned char)*data_bytes);
 
-  if(rank == 0)
+  if(rank == root)
   {
       memcpy(data_bits, buffer, data_bytes);
       crc = do_crc32(data_bits, data_bytes);		
@@ -43,7 +42,7 @@ void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* rese
   unsigned char* blocks[bs_num];
   char* c[bs_num];
   int r[bs_num];
-  if(rank == 0)
+  if(rank == root)
   { 
     for(int i=0; i<bs_num; i++)
     {
@@ -63,23 +62,23 @@ void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* rese
   }
   //printf("rank = %d, bs = %d, bs_last = %d, bs_num = %d, r[0] = %d\n", rank, bs, bs_last, bs_num, r[0]);
 
-  MPI_Bcast(data_bits, data_bytes, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
-  MPI_Bcast(&crc, 1, MPI_UNSIGNED, 0, MPI_COMM_WORLD);
+  MPI_Bcast(data_bits, data_bytes, MPI_UNSIGNED_CHAR, root, MPI_COMM_WORLD);
+  MPI_Bcast(&crc, 1, MPI_UNSIGNED, root, MPI_COMM_WORLD);
 
   //hamming
-  MPI_Bcast(r, bs_num, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(r, bs_num, MPI_INT, root, MPI_COMM_WORLD);
   for(int i=0; i<bs_num; i++)
   {
-    if(rank != 0)
+    if(rank != root)
     {
       c[i] = (char*) malloc(sizeof(char)*(r[i]+1));
     }
-    MPI_Bcast(c[i], r[i]+1, MPI_CHAR, 0, MPI_COMM_WORLD);
+    MPI_Bcast(c[i], r[i]+1, MPI_CHAR, root, MPI_COMM_WORLD);
   }
   // printf("r[0] = %d, c[0][1] = %c\n", r[0], c[0][1]);
 
 
-  if(rank != 0)
+  if(rank != root)
   {
         // uint64_t to = 1e7;
         // int errors = data_bytes*8/to;
@@ -124,13 +123,13 @@ void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* rese
       crc_ok_recv = (unsigned char *)malloc(procs*1*sizeof(unsigned char));
   }
 
-  MPI_Gather(&crc_ok, 1, MPI_UNSIGNED_CHAR, crc_ok_recv, 1, MPI_UNSIGNED_CHAR, 0, MPI_COMM_WORLD);
+  MPI_Gather(&crc_ok, 1, MPI_UNSIGNED_CHAR, crc_ok_recv, 1, MPI_UNSIGNED_CHAR, root, MPI_COMM_WORLD);
   
-  if(rank == 0)
+  if(rank == root)
   {
       for(int i = 0; i < procs; i++)
       {
-          if(i != 0 && crc_ok_recv[i] == 'n')
+          if(i != root && crc_ok_recv[i] == 'n')
           {
               MPI_Send(data_bits, data_bytes, MPI_UNSIGNED_CHAR, i, i, MPI_COMM_WORLD);
               //(*resend)++;
@@ -139,10 +138,10 @@ void MPI_Bcast_abft(double *buffer, int count, int rank, int procs)//, int* rese
   }
   else if(crc_ok == 'n')
   {
-      MPI_Recv(data_bits, data_bytes, MPI_UNSIGNED_CHAR, 0, rank, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      MPI_Recv(data_bits, data_bytes, MPI_UNSIGNED_CHAR, root, rank, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
   }
 
-  if(rank != 0) memcpy(buffer, data_bits, data_bytes);
+  if(rank != root) memcpy(buffer, data_bits, data_bytes);
 
   free(data_bits);
 }

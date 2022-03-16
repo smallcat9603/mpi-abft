@@ -170,8 +170,8 @@ int main(int argc, char *argv[]) {
     //int resent = 0;
     
     // send 1D matrices to workers
-    MPI_Bcast_abft(m_a, size_a, rank, num_worker); //, &resent);
-    MPI_Bcast_abft(m_b, size_b, rank, num_worker); //, &resent); 
+    MPI_Bcast_abft(m_a, size_a, 0, rank, num_worker); //, &resent);
+    MPI_Bcast_abft(m_b, size_b, 0, rank, num_worker); //, &resent); 
     
     // calculate the start- and endrow for worker  
     int startrow = rank * ( matrix_properties[0] / num_worker);
