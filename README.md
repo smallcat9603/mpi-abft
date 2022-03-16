@@ -18,4 +18,16 @@ $ mpirun -np <num_of_procs> bin/mm_abft <matrix_a_filename> <matrix_b_filename>
 ```
 A small program [gen_matrices.py](src/mm/gen_matrices.py) helps to generate a matrix. 
 
+## LU
+- Compile
+```
+$ make lu
+$ make lu_abft
+```
+- Run
+```
+$ mpirun -np <num_of_procs> bin/lu <matrix_size>
+$ mpirun -np <num_of_procs> bin/lu_abft <matrix_size>
+```
+
 
