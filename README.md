@@ -30,4 +30,16 @@ $ mpirun -np <num_of_procs> bin/lu <matrix_size>
 $ mpirun -np <num_of_procs> bin/lu_abft <matrix_size>
 ```
 
+## K-means
+- Compile
+```
+$ make kmeans
+$ make kmeans_abft
+```
+- Run
+```
+$ mpirun -np <num_of_procs> bin/kmeans
+$ mpirun -np <num_of_procs> bin/kmeans_abft
+```
+
 
